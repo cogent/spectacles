@@ -4,6 +4,8 @@ require 'pathname'
 
 module WebDriverSupport
 
+  EDGES = [:top, :right, :bottom, :left]
+
   def webdriver
     @driver ||= Selenium::WebDriver.for(:firefox).tap do |driver|
       at_exit do
@@ -18,6 +20,74 @@ module WebDriverSupport
 
   def find_element(css_selector)
     webdriver.find_element(:css, css_selector)
+  end
+
+  def find_elements(css_selector)
+    webdriver.find_elements(:css, css_selector)
+  end
+
+  module ElementGroup
+
+    EDGES.each do |edge|
+      define_method("aligned_to_#{edge}_edge?") do
+        map(&:"#{edge}_edge").uniq.size == 1
+      end
+    end
+
+  end
+
+  module Element
+
+    def color
+      style("color")
+    end
+    def top_edge
+      location.y
+    end
+
+    def right_edge
+      left_edge + size.width
+    end
+
+    def bottom_edge
+      top_edge + size.height
+    end
+
+    def left_edge
+      location.x
+    end
+
+    def top_of?(other_css_selector)
+      self.bottom_edge < other_element(other_css_selector).top_edge
+    end
+
+    def right_of?(other_css_selector)
+      self.left_edge > other_element(other_css_selector).right_edge
+    end
+
+    def bottom_of?(other_css_selector)
+      self.top_edge > other_element(other_css_selector).bottom_edge
+    end
+
+    def left_of?(other_css_selector)
+      self.right_edge < other_element(other_css_selector).left_edge
+    end
+
+    def enclosing?(other_css_selector)
+      other = other_element(other_css_selector)
+
+      left_edge < other.left_edge &&
+      right_edge > other.right_edge &&
+      top_edge < other.top_edge &&
+      bottom_edge > other.bottom_edge
+    end
+
+    private
+
+    def other_element(css_selector)
+      @bridge.findElementByCssSelector(nil, css_selector)
+    end
+
   end
 
 end
@@ -36,13 +106,6 @@ end
 
 RSpec.configure do |config|
 
-  # config.include Paperclip::Shoulda::Matchers
-  #
-  # config.mock_with :rr
-  #
-  # config.fixture_path = "#{::Rails.root}/spec/fixtures"
-  # config.use_transactional_fixtures = true
-
   config.include WebDriverSupport
   config.include Fixtures
 
@@ -50,63 +113,14 @@ end
 
 class Selenium::WebDriver::Element
 
-  class Rectangle < Struct.new(:location, :size)
+  include WebDriverSupport::Element
 
-    def top_edge
-      location.y
-    end
+end
 
-    def right_edge
-      left_edge + size.width
-    end
+class Array
 
-    def bottom_edge
-      top_edge + size.height
-    end
+  # TODO: YUK!
 
-    def left_edge
-      location.x
-    end
-
-    def right_of?(other)
-      self.left_edge > other.right_edge
-    end
-
-    def inspect
-      [:top_edge, :right_edge, :bottom_edge, :left_edge].inject({}) do |result, name|
-        result[name] = send(name)
-        result
-      end
-    end
-
-    def enclosing?(other)
-      left_edge < other.left_edge &&
-      right_edge > other.right_edge &&
-      top_edge < other.top_edge &&
-      bottom_edge > other.bottom_edge
-    end
-
-  end
-
-  def color
-    style("color")
-  end
-
-  [:top_of?, :right_of?, :bottom_of?, :left_of?, :enclosing?].each do |method_name|
-    define_method(method_name) do |css_selector|
-      other_bounds = other_element(css_selector).bounds
-      bounds.send(method_name, other_bounds)
-    end
-  end
-
-  def bounds
-    Rectangle.new(location, size)
-  end
-
-  private
-
-  def other_element(css_selector)
-    @bridge.findElementByCssSelector(nil, css_selector)
-  end
+  include WebDriverSupport::ElementGroup
 
 end

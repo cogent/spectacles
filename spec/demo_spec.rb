@@ -39,4 +39,14 @@ describe "demo page" do
 
   end
 
+  describe "nav links" do
+
+    subject { find_elements("#main nav li") }
+
+    it { should be_aligned_to_top_edge }
+
+    it { should be_aligned_to_bottom_edge }
+
+  end
+
 end
