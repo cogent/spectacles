@@ -50,14 +50,41 @@ end
 
 class Selenium::WebDriver::Element
 
+  class Rectangle < Struct.new(:location, :size)
+
+    def right_of?(other)
+      self.left_edge > other.right_edge
+    end
+
+    def left_edge
+      location.x
+    end
+
+    def right_edge
+      left_edge + size.width
+    end
+
+    def top_edge
+      location.y
+    end
+
+    def bottom_edge
+      top_edge + size.height
+    end
+
+  end
+
   def color
     style("color")
   end
 
   def right_of?(css_selector)
     other_element = @bridge.findElementByCssSelector(nil, css_selector)
-    other_rhs = other_element.location.x + other_element.size.width
-    location.x > other_rhs
+    bounds.right_of?(other_element.bounds)
+  end
+
+  def bounds
+    Rectangle.new(location, size)
   end
 
 end
