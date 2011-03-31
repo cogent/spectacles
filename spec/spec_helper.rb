@@ -46,7 +46,8 @@ class Selenium::WebDriver::Element
     style("color")
   end
 
-  def right_of?(other_element)
+  def right_of?(css_selector)
+    other_element = @bridge.findElementByCssSelector(nil, css_selector)
     other_rhs = other_element.location.x + other_element.size.width
     location.x > other_rhs
   end

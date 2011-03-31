@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe "demo page" do
 
@@ -8,7 +8,7 @@ describe "demo page" do
 
   describe "h1" do
 
-    let(:h1) { webdriver.find_element(:css, 'h1') }
+    let(:h1) { webdriver.find_element(:css, "h1") }
     subject { h1 }
 
     its(:color) { should == "#cccccc" }
@@ -16,22 +16,19 @@ describe "demo page" do
 
   end
 
-  let(:main) { webdriver.find_element(:css, '#main') }
-  let(:sidebar) { webdriver.find_element(:css, 'aside') }
-
   describe "#main" do
 
-    subject { main }
+    subject { webdriver.find_element(:css, "#main") }
 
     its(:x_position) { should <= 30 }
 
   end
 
-  describe "sidebar" do
+  describe "aside" do
 
-    subject { sidebar }
+    subject { webdriver.find_element(:css, "aside") }
 
-    it { should be_right_of(main) }
+    it { should be_right_of("#main") }
 
   end
 
