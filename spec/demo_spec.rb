@@ -57,4 +57,12 @@ describe "demo page" do
 
   end
 
+  describe "whatever" do
+
+    subject { find_elements("#main, aside")}
+
+    it { should be_top_aligned }
+
+  end
+
 end

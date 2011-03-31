@@ -41,6 +41,7 @@ module WebDriverSupport
     def color
       style("color")
     end
+
     def top_edge
       location.y
     end
