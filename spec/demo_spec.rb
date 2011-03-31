@@ -87,4 +87,16 @@ describe "demo page" do
 
   end
 
+  describe "inline elements" do
+
+    subject { find_elements("#inline > *") }
+
+    all { should be_horizontally_aligned }
+    all { should_not be_vertically_aligned }
+    all { should be_top_aligned }
+    all { should be_bottom_aligned }
+    all { should be_same_height }
+
+  end
+
 end
