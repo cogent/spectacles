@@ -19,7 +19,7 @@ describe "demo page" do
 
     subject { find_element("#main") }
 
-    its(:x_position) { should <= 30 }
+    its("location.x") { should <= 30 }
 
   end
 

@@ -60,16 +60,4 @@ class Selenium::WebDriver::Element
     location.x > other_rhs
   end
 
-  def x_position
-    position.x
-  end
-
-  def y_position
-    position.y
-  end
-
-  def position
-    location
-  end
-
 end
