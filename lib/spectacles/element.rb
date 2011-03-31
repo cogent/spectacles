@@ -7,7 +7,7 @@ module Spectacles
     end
 
     def centre
-      Selenium::WebDriver::Point.new(left_edge + (width / 2), top_edge + (height / 2))
+      Selenium::WebDriver::Point.new(left + (width / 2), top + (height / 2))
     end
 
     def width
@@ -18,87 +18,87 @@ module Spectacles
       size.height
     end
 
-    def top_edge
+    def top
       location.y
     end
 
-    def right_edge
-      left_edge + width
+    def right
+      left + width
     end
 
-    def bottom_edge
-      top_edge + height
+    def bottom
+      top + height
     end
 
-    def left_edge
+    def left
       location.x
     end
 
-    def top_of?(other_css_selector)
-      self.bottom_edge < other_element(other_css_selector).top_edge
+    def above?(css_selector)
+      self.bottom < other_element(css_selector).top
     end
 
-    def right_of?(other_css_selector)
-      self.left_edge > other_element(other_css_selector).right_edge
+    def right_of?(css_selector)
+      self.left > other_element(css_selector).right
     end
 
-    def bottom_of?(other_css_selector)
-      self.top_edge > other_element(other_css_selector).bottom_edge
+    def below?(css_selector)
+      self.top > other_element(css_selector).bottom
     end
 
-    def left_of?(other_css_selector)
-      self.right_edge < other_element(other_css_selector).left_edge
+    def left_of?(css_selector)
+      self.right < other_element(css_selector).left
     end
 
-    def enclosing?(other_css_selector)
-      other = other_element(other_css_selector)
+    def enclosing?(css_selector)
+      other = other_element(css_selector)
 
-      left_edge < other.left_edge &&
-      right_edge > other.right_edge &&
-      top_edge < other.top_edge &&
-      bottom_edge > other.bottom_edge
+      left < other.left &&
+      right > other.right &&
+      top < other.top &&
+      bottom > other.bottom
     end
 
-    def overlapping_with?(other_css_selector)
-      other = other_element(other_css_selector)
+    def overlapping_with?(css_selector)
+      other = other_element(css_selector)
 
-      left_edge <= other.right_edge &&
-      right_edge >= other.left_edge &&
-      top_edge <= other.bottom_edge &&
-      bottom_edge >= other.top_edge
+      left <= other.right &&
+      right >= other.left &&
+      top <= other.bottom &&
+      bottom >= other.top
     end
 
-    def overlaying?(other_css_selector)
-      other = other_element(other_css_selector)
+    def overlaying?(css_selector)
+      other = other_element(css_selector)
 
       location == other.location &&
       size == other.size
     end
 
-    [:location, :width, :height, :size].each do |property|
-      define_method(:"same_#{property}_as?") do |other_css_selector|
-        same_as?(property, other_css_selector)
+    [:centre, :location, :width, :height, :size].each do |property|
+      define_method("same_#{property}_as?") do |css_selector|
+        same?(property, css_selector)
       end
     end
 
     [:top, :right, :bottom, :left].each do |edge|
-      define_method("#{edge}_aligned_with?") do |other_css_selector|
-        same_as?(:"#{edge}_edge", other_css_selector)
+      define_method("#{edge}_aligned_with?") do |css_selector|
+        same?(edge, css_selector)
       end
     end
 
-    def vertically_aligned_with?(other_css_selector)
-      other = other_element(other_css_selector)
+    def vertically_aligned_with?(css_selector)
+      other = other_element(css_selector)
       centre.x == other.centre.x
     end
 
-    def horizontally_aligned_with?(other_css_selector)
-      other = other_element(other_css_selector)
+    def horizontally_aligned_with?(css_selector)
+      other = other_element(css_selector)
       centre.y == other.centre.y
     end
 
-    def centred_with?(other_css_selector)
-      other = other_element(other_css_selector)
+    def centred_with?(css_selector)
+      other = other_element(css_selector)
       centre == other.centre
     end
 
@@ -109,8 +109,8 @@ module Spectacles
       @bridge.findElementByCssSelector(nil, css_selector)
     end
 
-    def same_as?(property, other_css_selector)
-      send(property) == other_element(other_css_selector).send(property)
+    def same?(method_name, css_selector)
+      send(method_name) == other_element(css_selector).send(method_name)
     end
 
   end
