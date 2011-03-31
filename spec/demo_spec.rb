@@ -6,7 +6,7 @@ describe "demo page" do
     navigate_to(fixture_url("demo.html"))
   end
 
-  describe "h1" do
+  describe "heading" do
 
     subject { find_element("h1") }
 
@@ -15,7 +15,7 @@ describe "demo page" do
 
   end
 
-  describe "#main" do
+  describe "main content" do
 
     subject { find_element("#main") }
 
@@ -27,7 +27,7 @@ describe "demo page" do
 
     subject { find_elements("aside li") }
 
-    all { should be_left_aligned }
+    they { should be_left_aligned }
 
   end
 
@@ -51,8 +51,8 @@ describe "demo page" do
 
     subject { find_elements("#main nav li") }
 
-    all { should be_top_aligned }
-    all { should be_bottom_aligned }
+    they { should be_top_aligned }
+    they { should be_bottom_aligned }
 
   end
 
@@ -73,17 +73,17 @@ describe "demo page" do
 
   end
 
-  describe "overlap elements" do
+  describe "overlapping elements" do
 
     subject { find_elements("#a, #b") }
 
-    all { should be_same_height }
-    all { should be_same_width }
-    all { should be_same_size }
-    all { should be_left_aligned }
-    all { should be_right_aligned }
-    all { should be_vertically_aligned }
-    all { should_not be_horizontally_aligned }
+    they { should be_same_height }
+    they { should be_same_width }
+    they { should be_same_size }
+    they { should be_left_aligned }
+    they { should be_right_aligned }
+    they { should be_vertically_aligned }
+    they { should_not be_horizontally_aligned }
 
   end
 
@@ -91,11 +91,11 @@ describe "demo page" do
 
     subject { find_elements("#inline > *") }
 
-    all { should be_horizontally_aligned }
-    all { should_not be_vertically_aligned }
-    all { should be_top_aligned }
-    all { should be_bottom_aligned }
-    all { should be_same_height }
+    they { should be_horizontally_aligned }
+    they { should_not be_vertically_aligned }
+    they { should be_top_aligned }
+    they { should be_bottom_aligned }
+    they { should be_same_height }
 
   end
 

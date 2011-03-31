@@ -8,7 +8,7 @@ module Spectacles
 
     module ClassMethods
 
-      def all(*args, &block)
+      def they(*args, &block)
         it(*args, &block)
       end
 
