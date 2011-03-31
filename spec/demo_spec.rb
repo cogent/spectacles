@@ -11,7 +11,7 @@ describe "demo page" do
     let(:h1) { webdriver.find_element(:css, 'h1') }
     subject { h1 }
   
-    it { should have_color("#000000") }
+    it { should be_colored("#000000") }
 
     describe "text" do
       subject { h1.text }
@@ -31,10 +31,12 @@ describe "demo page" do
     
   end
 
-  # describe "sidebar" do
-  #   
-  #   it { should be_right_of("#main") }
-  #   
-  # end
+  describe "sidebar" do
+    
+    subject { sidebar }
+
+    it { should be_right_of(main) }
+    
+  end
   
 end

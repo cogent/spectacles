@@ -40,7 +40,7 @@ RSpec.configure do |config|
   
 end
 
-RSpec::Matchers.define :have_color do |hex_color|
+RSpec::Matchers.define :be_colored do |hex_color|
 
   match do |element|
     @actual_color = element.style("color")
@@ -48,7 +48,7 @@ RSpec::Matchers.define :have_color do |hex_color|
   end
   
   failure_message_for_should do |actual|
-    "expected element have color #{hex_color}, but it was #{@actual_color}"
+    "expected element be colored #{hex_color}, but it was #{@actual_color}"
   end
 
 end
@@ -70,3 +70,15 @@ RSpec::Matchers.define :have_position do |expected_coordinates|
 
 end
 
+class Selenium::WebDriver::Element
+
+  def colored?(expected_color)
+    style("color") == expected_color
+  end
+  
+  def right_of?(other_element)
+    other_rhs = other_element.location.x + other_element.size.width
+    location.x > other_rhs
+  end
+  
+end
