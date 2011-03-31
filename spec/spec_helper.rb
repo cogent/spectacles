@@ -6,6 +6,10 @@ module WebDriverSupport
 
   EDGES = [:top, :right, :bottom, :left]
 
+  def self.included(base)
+    base.extend(ClassMethods)
+  end
+
   def webdriver
     @driver ||= Selenium::WebDriver.for(:firefox).tap do |driver|
       at_exit do
@@ -24,6 +28,14 @@ module WebDriverSupport
 
   def find_elements(css_selector)
     webdriver.find_elements(:css, css_selector)
+  end
+
+  module ClassMethods
+
+    def all(*args, &block)
+      it(*args, &block)
+    end
+
   end
 
   module ElementGroup

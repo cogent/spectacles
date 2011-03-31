@@ -27,7 +27,7 @@ describe "demo page" do
 
     subject { find_elements("aside li") }
 
-    it { should be_left_aligned }
+    all { should be_left_aligned }
 
   end
 
@@ -51,9 +51,8 @@ describe "demo page" do
 
     subject { find_elements("#main nav li") }
 
-    it { should be_top_aligned }
-
-    it { should be_bottom_aligned }
+    all { should be_top_aligned }
+    all { should be_bottom_aligned }
 
   end
 
@@ -69,11 +68,11 @@ describe "demo page" do
 
     subject { find_elements("#a, #b") }
 
-    it { should be_same_height }
-    it { should be_same_width }
-    it { should be_same_size }
-    it { should be_left_aligned }
-    it { should be_right_aligned }
+    all { should be_same_height }
+    all { should be_same_width }
+    all { should be_same_size }
+    all { should be_left_aligned }
+    all { should be_right_aligned }
 
   end
 
