@@ -12,6 +12,14 @@ module WebDriverSupport
     end
   end
 
+  def navigate_to(url)
+    webdriver.navigate.to(url)
+  end
+
+  def find_element(css_selector)
+    webdriver.find_element(:css, css_selector)
+  end
+
 end
 
 module Fixtures
