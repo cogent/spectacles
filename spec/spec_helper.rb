@@ -115,18 +115,31 @@ module WebDriverSupport
       bottom_edge > other.bottom_edge
     end
 
-    def overlapping?(other_css_selector)
+    def overlapping_with?(other_css_selector)
       other = other_element(other_css_selector)
 
-      left_edge < other.right_edge &&
-      right_edge > other.left_edge &&
-      top_edge < other.bottom_edge &&
-      bottom_edge > other.top_edge
+      left_edge <= other.right_edge &&
+      right_edge >= other.left_edge &&
+      top_edge <= other.bottom_edge &&
+      bottom_edge >= other.top_edge
     end
 
-    [:width, :height, :size].each do |property|
+    def overlaying?(other_css_selector)
+      other = other_element(other_css_selector)
+
+      location == other.location &&
+      size == other.size
+    end
+
+    [:location, :width, :height, :size].each do |property|
       define_method(:"same_#{property}_as?") do |other_css_selector|
-        send(property) == other_element(other_css_selector).send(property)
+        same_as?(property, other_css_selector)
+      end
+    end
+
+    EDGES.each do |edge|
+      define_method("#{edge}_aligned_with?") do |other_css_selector|
+        same_as?(:"#{edge}_edge", other_css_selector)
       end
     end
 
@@ -134,6 +147,10 @@ module WebDriverSupport
 
     def other_element(css_selector)
       @bridge.findElementByCssSelector(nil, css_selector)
+    end
+
+    def same_as?(property, other_css_selector)
+      send(property) == other_element(other_css_selector).send(property)
     end
 
   end

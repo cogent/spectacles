@@ -60,7 +60,14 @@ describe "demo page" do
 
     subject { find_element("#a") }
 
-    it { should be_overlapping("#b") }
+    it { should be_overlapping_with("#b") }
+    it { should be_same_location_as("#c") }
+    it { should be_overlaying("#c") }
+    it { should be_same_height_as("#c") }
+    it { should be_same_width_as("#c") }
+    it { should be_same_size_as("#c") }
+    it { should be_left_aligned_with("#c") }
+    it { should be_right_aligned_with("#c") }
 
   end
 
