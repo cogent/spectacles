@@ -52,24 +52,38 @@ class Selenium::WebDriver::Element
 
   class Rectangle < Struct.new(:location, :size)
 
-    def right_of?(other)
-      self.left_edge > other.right_edge
-    end
-
-    def left_edge
-      location.x
+    def top_edge
+      location.y
     end
 
     def right_edge
       left_edge + size.width
     end
 
-    def top_edge
-      location.y
-    end
-
     def bottom_edge
       top_edge + size.height
+    end
+
+    def left_edge
+      location.x
+    end
+
+    def right_of?(other)
+      self.left_edge > other.right_edge
+    end
+
+    def inspect
+      [:top_edge, :right_edge, :bottom_edge, :left_edge].inject({}) do |result, name|
+        result[name] = send(name)
+        result
+      end
+    end
+
+    def enclosing?(other)
+      left_edge < other.left_edge &&
+      right_edge > other.right_edge &&
+      top_edge < other.top_edge &&
+      bottom_edge > other.bottom_edge
     end
 
   end
@@ -78,13 +92,21 @@ class Selenium::WebDriver::Element
     style("color")
   end
 
-  def right_of?(css_selector)
-    other_element = @bridge.findElementByCssSelector(nil, css_selector)
-    bounds.right_of?(other_element.bounds)
+  [:top_of?, :right_of?, :bottom_of?, :left_of?, :enclosing?].each do |method_name|
+    define_method(method_name) do |css_selector|
+      other_bounds = other_element(css_selector).bounds
+      bounds.send(method_name, other_bounds)
+    end
   end
 
   def bounds
     Rectangle.new(location, size)
+  end
+
+  private
+
+  def other_element(css_selector)
+    @bridge.findElementByCssSelector(nil, css_selector)
   end
 
 end

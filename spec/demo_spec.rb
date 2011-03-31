@@ -31,4 +31,12 @@ describe "demo page" do
 
   end
 
+  describe "article" do
+
+    subject { find_element("article") }
+
+    it { should be_enclosing("aside") }
+
+  end
+
 end

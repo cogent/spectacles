@@ -9,11 +9,15 @@
     h1 {
       color: #cccccc;
     }
-    section, aside {
+    section, aside, article {
       display: block;
       margin: 5px;
       padding: 10px;
       border: 1px solid #999;
+    }
+    article {
+      overflow: hidden;
+      *zoom: 1;
     }
     aside {
       margin-top: 0;
@@ -27,19 +31,21 @@
   </head>
 
   <body>
-    <aside>
-      <h2>Sidebar</h2>
-      <ul>
-        <li>Link</li>
-        <li>Link</li>
-        <li>Link</li>
-        <li>Link</li>
-      </ul>
-    </aside>
-    <section id="main">
-      <h1>Test page</h1>
-      <p>Some informative content.</p>
-    </section>
+    <article>
+      <aside>
+        <h2>Sidebar</h2>
+        <ul>
+          <li>Link</li>
+          <li>Link</li>
+          <li>Link</li>
+          <li>Link</li>
+        </ul>
+      </aside>
+      <section id="main">
+        <h1>Test page</h1>
+        <p>Some informative content.</p>
+      </section>
+    </article>
   </body>
 
 </html>
