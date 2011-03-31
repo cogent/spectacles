@@ -40,3 +40,33 @@ RSpec.configure do |config|
   
 end
 
+RSpec::Matchers.define :have_color do |hex_color|
+
+  match do |element|
+    @actual_color = element.style("color")
+    @actual_color == hex_color
+  end
+  
+  failure_message_for_should do |actual|
+    "expected element have color #{hex_color}, but it was #{@actual_color}"
+  end
+
+end
+
+RSpec::Matchers.define :have_position do |expected_coordinates|
+
+  match do |element|
+    location = element.location
+    @actual_coordinates = expected_coordinates.inject({}) do |h,(k,v)|
+      h[k] = location.send(k)
+      h
+    end
+    @actual_coordinates == expected_coordinates
+  end
+
+  failure_message_for_should do |actual|
+    "expected element be at #{expected_coordinates}, but it was at #{@actual_coordinates}"
+  end
+
+end
+
