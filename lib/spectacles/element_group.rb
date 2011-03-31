@@ -2,22 +2,27 @@ module Spectacles
 
   module ElementGroup
 
-    [:top, :right, :bottom, :left].each do |edge|
-      define_method("#{edge}_aligned?") do
-        same?(:"#{edge}_edge")
+    [:centre, :location, :width, :height, :size].each do |property|
+      element_method_name = "same_#{property}_as?"
+      define_method("same_#{property}?") do
+        all_same?(element_method_name)
       end
     end
 
-    [:centre, :location, :width, :height, :size].each do |property|
-      define_method(:"same_#{property}?") do
-        same?(property)
+    [:top, :right, :bottom, :left, :vertically, :horizontally].each do |axis|
+      element_method_name = "#{axis}_aligned_with?"
+      define_method("#{axis}_aligned?") do
+        all_same?(element_method_name)
       end
     end
 
     private
 
-    def same?(property)
-      map(&property).uniq.size == 1
+    def all_same?(method_name)
+      first, *remainder = self
+      remainder.all? do |element|
+        element.send(method_name, first)
+      end
     end
 
   end

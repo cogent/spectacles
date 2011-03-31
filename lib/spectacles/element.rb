@@ -105,6 +105,7 @@ module Spectacles
     private
 
     def other_element(css_selector)
+      return css_selector if css_selector.is_a?(Element)
       @bridge.findElementByCssSelector(nil, css_selector)
     end
 
