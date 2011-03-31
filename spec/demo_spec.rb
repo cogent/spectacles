@@ -31,7 +31,7 @@ describe "demo page" do
 
   end
 
-  describe "aside" do
+  describe "sidebar" do
 
     subject { find_element("aside") }
 
@@ -57,11 +57,23 @@ describe "demo page" do
 
   end
 
-  describe "whatever" do
+  describe "#a" do
 
-    subject { find_elements("#main, aside")}
+    subject { find_element("#a") }
 
-    it { should be_top_aligned }
+    it { should be_overlapping("#b") }
+
+  end
+
+  describe "overlap elements" do
+
+    subject { find_elements("#a, #b") }
+
+    it { should be_same_height }
+    it { should be_same_width }
+    it { should be_same_size }
+    it { should be_left_aligned }
+    it { should be_right_aligned }
 
   end
 

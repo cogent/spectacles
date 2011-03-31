@@ -30,8 +30,20 @@ module WebDriverSupport
 
     EDGES.each do |edge|
       define_method("#{edge}_aligned?") do
-        map(&:"#{edge}_edge").uniq.size == 1
+        same?(:"#{edge}_edge")
       end
+    end
+
+    [:width, :height, :size].each do |property|
+      define_method(:"same_#{property}?") do
+        same?(property)
+      end
+    end
+
+    private
+
+    def same?(property)
+      map(&property).uniq.size == 1
     end
 
   end
@@ -42,16 +54,24 @@ module WebDriverSupport
       style("color")
     end
 
+    def width
+      size.width
+    end
+
+    def height
+      size.height
+    end
+
     def top_edge
       location.y
     end
 
     def right_edge
-      left_edge + size.width
+      left_edge + width
     end
 
     def bottom_edge
-      top_edge + size.height
+      top_edge + height
     end
 
     def left_edge
@@ -81,6 +101,21 @@ module WebDriverSupport
       right_edge > other.right_edge &&
       top_edge < other.top_edge &&
       bottom_edge > other.bottom_edge
+    end
+
+    def overlapping?(other_css_selector)
+      other = other_element(other_css_selector)
+
+      left_edge < other.right_edge &&
+      right_edge > other.left_edge &&
+      top_edge < other.bottom_edge &&
+      bottom_edge > other.top_edge
+    end
+
+    [:width, :height, :size].each do |property|
+      define_method(:"same_#{property}_as?") do |other_css_selector|
+        send(property) == other_element(other_css_selector).send(property)
+      end
     end
 
     private
