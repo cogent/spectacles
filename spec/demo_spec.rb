@@ -68,6 +68,8 @@ describe "demo page" do
     it { should be_same_size_as("#c") }
     it { should be_left_aligned_with("#c") }
     it { should be_right_aligned_with("#c") }
+    it { should be_horizontally_aligned_with("#c") }
+    it { should be_centred_with("#c") }
 
   end
 
@@ -80,6 +82,8 @@ describe "demo page" do
     all { should be_same_size }
     all { should be_left_aligned }
     all { should be_right_aligned }
+    all { should be_vertically_aligned }
+    all { should_not be_horizontally_aligned }
 
   end
 
