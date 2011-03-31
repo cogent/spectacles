@@ -6,25 +6,36 @@
       margin: 0;
       padding: 0;
     }
-    section {
+    section, aside {
       display: block;
-      position: relative;
-      margin: 10px;
-      padding: 0;
+      margin: 5px;
+      padding: 10px;
+      border: 1px solid #999;
     }
-    h1 {
-      position: absolute;
-      margin: 0;
-      padding: 0;
-      left: 0;
-      top: 13px;
+    aside {
+      margin-top: 0;
+      float: right;
+      width: 300px;
+    }
+    section {
+      margin-right: 340px;
     }
     </style>
   </head>
 
   <body>
-    <section>
+    <aside>
+      <h2>Sidebar<h2>
+      <ul>
+        <li>Link</li>
+        <li>Link</li>
+        <li>Link</li>
+        <li>Link</li>
+      </ul>
+    </aside>
+    <section id="main">
       <h1>Test page</h1>
+      <p>Some informative content.</p>
     </section>
   </body>
   
