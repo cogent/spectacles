@@ -1,22 +1,18 @@
 require 'spec_helper'
 
 describe "demo page" do
-  
+
   before(:all) do
     webdriver.navigate.to(fixture_url("demo.html"))
   end
-  
+
   describe "h1" do
-  
+
     let(:h1) { webdriver.find_element(:css, 'h1') }
     subject { h1 }
-  
-    it { should be_colored("#000000") }
 
-    describe "text" do
-      subject { h1.text }
-      it { should == "Test page" }
-    end
+    its(:color) { should == "#cccccc" }
+    its(:text) { should == "Test page" }
 
   end
 
@@ -25,18 +21,18 @@ describe "demo page" do
 
   describe "#main" do
 
-    it "is on the left of the window" do
-      main.location.x.should <= 30
-    end
-    
+    subject { main }
+
+    its(:x_position) { should <= 30 }
+
   end
 
   describe "sidebar" do
-    
+
     subject { sidebar }
 
     it { should be_right_of(main) }
-    
+
   end
-  
+
 end
