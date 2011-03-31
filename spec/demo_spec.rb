@@ -23,6 +23,14 @@ describe "demo page" do
 
   end
 
+  describe "sidebar links" do
+
+    subject { find_elements("aside li") }
+
+    it { should be_left_aligned }
+
+  end
+
   describe "aside" do
 
     subject { find_element("aside") }
@@ -39,13 +47,13 @@ describe "demo page" do
 
   end
 
-  describe "nav links" do
+  describe "nav items" do
 
     subject { find_elements("#main nav li") }
 
-    it { should be_aligned_to_top_edge }
+    it { should be_top_aligned }
 
-    it { should be_aligned_to_bottom_edge }
+    it { should be_bottom_aligned }
 
   end
 

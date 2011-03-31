@@ -29,7 +29,7 @@ module WebDriverSupport
   module ElementGroup
 
     EDGES.each do |edge|
-      define_method("aligned_to_#{edge}_edge?") do
+      define_method("#{edge}_aligned?") do
         map(&:"#{edge}_edge").uniq.size == 1
       end
     end
